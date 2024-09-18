@@ -22,3 +22,18 @@
 
 <body id="page-top">
 </body>
+#!/bin/bash
+
+for i in $(awk '/Failed/{print $(NF-3)}' /var/log/auth.log | grep -v "invalid" | sort |uniq -c |awk '{if($1>10) print $2}')
+do
+   if [ ! $(grep $i /etc/hosts.deny) ];then
+   echo "sshd:$i:deny" >> /etc/hosts.deny
+   fi#!/bin/bash
+
+for i in $(awk '/Failed/{print $(NF-3)}' /var/log/auth.log | grep -v "invalid" | sort |uniq -c |awk '{if($1>10) print $2}')
+do
+   if [ ! $(grep $i /etc/hosts.deny) ];then
+   echo "sshd:$i:deny" >> /etc/hosts.deny
+   fi
+done
+>/var/log/auth.log
